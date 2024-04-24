@@ -5,4 +5,5 @@ module com.netocalegari.javafxjdbc {
 
     opens com.netocalegari.javafxjdbc to javafx.fxml;
     exports com.netocalegari.javafxjdbc;
+    exports com.netocalegari.javafxjdbc.gui;
 }
