@@ -2,6 +2,9 @@ package com.netocalegari.javafxjdbc.gui;
 
 import com.netocalegari.javafxjdbc.Main;
 import com.netocalegari.javafxjdbc.model.entities.Department;
+import com.netocalegari.javafxjdbc.model.services.DepartmentService;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -11,9 +14,11 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 
 import java.net.URL;
+import java.util.List;
 import java.util.ResourceBundle;
 
 public class DepartmentListController implements Initializable {
+    private DepartmentService service;
     @FXML
     private TableView<Department> tableViewDepartment;
     @FXML
@@ -23,6 +28,12 @@ public class DepartmentListController implements Initializable {
 
     @FXML
     private Button btNew;
+
+    private ObservableList<Department> obsList;
+
+    public void setDepartmentService(DepartmentService service) {
+        this.service = service;
+    }
 
     public void onBtNewAction() {
         System.out.println("onBtNewAction");
@@ -38,5 +49,14 @@ public class DepartmentListController implements Initializable {
 
         Stage stage = (Stage) Main.getMainScene().getWindow();
         tableViewDepartment.prefHeightProperty().bind(stage.heightProperty());
+    }
+
+    public void updateTableView() {
+        if (service == null) {
+            throw new IllegalStateException("Service is null");
+        }
+        List<Department> list = service.findAll();
+        obsList = FXCollections.observableArrayList(list);
+        tableViewDepartment.setItems(obsList);
     }
 }
